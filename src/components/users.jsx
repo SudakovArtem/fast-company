@@ -3,13 +3,31 @@ import api from '../api'
 
 const Users = () => {
   const [users, setUsers] = useState(api.users.fetchAll())
+  const prettify = (num) => {
+    let n = num.toString();
+    let last = n.slice(-1);
+    if (n === `11` || n === `12` || n === `13` || n === `14`) {
+      return n.replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g, `$1` + ` `).replace(/^0+/, ``) + `  человек тусанут с тобой сегодня `;
+    } else {
+      if (last === `1`) {
+        return n.replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g, `$1` + ` `).replace(/^0+/, ``) + `  человек тусанет с тобой сегодня `;
+      } else if (last === `2` || last === `3` || last === `4`) {
+        return n.replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g, `$1` + ` `).replace(/^0+/, ``) + `  человека тусанет с тобой сегодня`;
+      } else {
+        return n.replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g, `$1` + ` `).replace(/^0+/, ``) + `  человек тусанут с тобой сегодня `;
+      }
+    }
+  };
+
   const handleDelete = (userId) => setUsers(users.filter(user => user._id !== userId))
+
   const renderPhrase = (number) =>
       <span className={`badge bg-${users.length ? 'primary' : 'danger'}`}>
           {number
-              ? `${number} человек тусанет с тобой сегодня`
+              ? prettify(number)
               : 'никто с тобой не тусанет'}
       </span>
+
   return (
     <>
       <h2>
