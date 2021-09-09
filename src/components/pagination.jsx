@@ -18,9 +18,12 @@ const Pagination = ({itemsCount, pageSize, onPageChange, currentPage}) => {
             aria-current="page"
           >
             <a
-                className="page-link"
-                style={{cursor: `${(page === currentPage ? 'default' : 'pointer')}`}}
-                onClick={onPageChange.bind(null, page)}>
+              className="page-link"
+              style={{
+                cursor: `${page === currentPage ? 'default' : 'pointer'}`
+              }}
+              onClick={onPageChange.bind(null, page)}
+            >
               {page}
             </a>
           </li>

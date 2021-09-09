@@ -15,6 +15,7 @@ module.exports = {
   rules: {
     semi: [2, 'always'],
     'space-before-function-paren': ['error', 'never'],
-    'object-curly-spacing': [2, 'never']
+    'object-curly-spacing': [2, 'never'],
+    'multiline-ternary': ['error', 'never']
   }
 };

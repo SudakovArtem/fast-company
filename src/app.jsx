@@ -1,12 +1,12 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import api from './api';
 import Users from './components/users';
 
 const App = () => {
-  const initialState = api.users.fetchAll().map((user) => ({
-    ...user,
-    bookmark: Math.random() < 0.5
-  }));
+  // const initialState = api.users.fetchAll().map((user) => ({
+  //   ...user,
+  //   bookmark: Math.random() < 0.5
+  // }));
   const titles = [
     'Имя',
     'Качества',
@@ -16,7 +16,17 @@ const App = () => {
     'Избранное',
     ''
   ];
-  const [users, setUsers] = useState(initialState);
+  const [users, setUsers] = useState();
+  useEffect(() => {
+    api.users.fetchAll().then((data) =>
+      setUsers(
+        data.map((user) => ({
+          ...user,
+          bookmark: Math.random() < 0.5
+        }))
+      )
+    );
+  }, []);
 
   const handleDelete = (userId) =>
     setUsers(users.filter((user) => user._id !== userId));
@@ -29,12 +39,16 @@ const App = () => {
   };
 
   return (
-    <Users
-      titles={titles}
-      users={users}
-      onDelete={handleDelete}
-      onMark={handleMark}
-    />
+    <>
+      {users && (
+        <Users
+          titles={titles}
+          users={users}
+          onDelete={handleDelete}
+          onMark={handleMark}
+        />
+      )}
+    </>
   );
 };
 
