@@ -1,54 +1,28 @@
-import React from 'react';
-import Bookmark from './bookmark';
-import Quality from './quality';
-import PropTypes from 'prop-types';
+import React, {useEffect, useState} from 'react';
+import QualitiesList from './qualitiesList';
+import {useHistory, useParams} from 'react-router-dom';
+import api from '../api';
 
-const User = ({
-  _id,
-  name,
-  qualities,
-  profession,
-  completedMeetings,
-  rate,
-  bookmark,
-  onDelete,
-  onMark
-}) => (
-  <tr key={_id}>
-    <td>{name}</td>
-    <td>
-      {qualities.map((quality) => (
-        <Quality key={quality._id} {...quality} />
-      ))}
-    </td>
-    <td>{profession.name}</td>
-    <td>{completedMeetings}</td>
-    <td>{rate}/5</td>
-    <td>
-      <Bookmark checked={bookmark} onMark={onMark} id={_id} />
-    </td>
-    <td>
-      <button
-        type="button"
-        className="btn btn-danger"
-        onClick={onDelete.bind(null, _id)}
-      >
-        delete
-      </button>
-    </td>
-  </tr>
-);
+const User = () => {
+  const {userId} = useParams();
+  const history = useHistory();
+  const [user, setUser] = useState();
+  useEffect(() => {
+    api.users.getById(userId).then((data) => setUser(data));
+  }, []);
 
-User.propTypes = {
-  _id: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  qualities: PropTypes.array.isRequired,
-  profession: PropTypes.object.isRequired,
-  completedMeetings: PropTypes.number.isRequired,
-  rate: PropTypes.number.isRequired,
-  bookmark: PropTypes.bool.isRequired,
-  onDelete: PropTypes.func.isRequired,
-  onMark: PropTypes.func.isRequired
+  return (
+    <div>
+      {user ? <>
+        <h1>{user.name}</h1>
+        <h2>Профессия: {user.profession.name}</h2>
+        <QualitiesList qualities={user.qualities}/>
+        <p>completedMeetings: {user.completedMeetings}</p>
+        <h2>Rate: {user.rate}</h2>
+        <button onClick={() => history.push('/users')}>Все пользователи</button>
+      </> : <h1>loading...</h1>}
+    </div>
+  );
 };
 
 export default User;
