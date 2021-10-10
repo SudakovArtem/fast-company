@@ -6,6 +6,7 @@ import api from '../api';
 import GroupList from '../components/groupList';
 import UsersTable from '../components/usersTable';
 import _ from 'lodash';
+import SearchField from '../components/searchField';
 
 const Users = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -16,6 +17,7 @@ const Users = () => {
     order: 'asc'
   });
   const [users, setUsers] = useState();
+  const [searchInputData, setSearchInputData] = useState('');
 
   useEffect(() => {
     api.users.fetchAll().then((data) => setUsers(data));
@@ -41,6 +43,7 @@ const Users = () => {
 
   const handleProfessionSelect = (item) => {
     setSelectedProf(item);
+    setSearchInputData('');
   };
 
   const handlePageChange = (pageIndex) => {
@@ -51,10 +54,16 @@ const Users = () => {
     setSortBy(item);
   };
 
+  const handleSearchInputChange = ({target}) => {
+    setSearchInputData(target.value);
+    selectedProf && setSelectedProf();
+  };
+
   const pageSize = 8;
 
   if (users) {
-    const filteredUsers = selectedProf ? users.filter(user => JSON.stringify(user.profession) === JSON.stringify(selectedProf)) : users;
+    const searchedUsers = searchInputData ? users.filter(user => user.name.toLowerCase().includes(searchInputData)) : users;
+    const filteredUsers = selectedProf ? users.filter(user => JSON.stringify(user.profession) === JSON.stringify(selectedProf)) : searchedUsers;
     const count = filteredUsers.length;
     const sortedUsers = _.orderBy(filteredUsers, [sortBy.path], [sortBy.order]);
     const usersCrop = paginate(sortedUsers, currentPage, pageSize);
@@ -76,6 +85,7 @@ const Users = () => {
         )}
         <div className="d-flex flex-column flex-grow-1 p-3">
           <SearchStatus number={count}/>
+          <SearchField type="text" name="search" value={searchInputData} onChange={handleSearchInputChange} placeholder="Search..."/>
           {count ? (
             <UsersTable
               users={usersCrop}
