@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
 
-const SelectField = ({options, onChange, name, label, value}) => {
+const SelectField = ({options, onChange, name, label, value, defaultValue}) => {
   const optionsArray =
     !Array.isArray(options) && typeof options === 'object' ? Object.keys(options).map((optionName) => ({
       label: options[optionName].name,
@@ -11,7 +11,7 @@ const SelectField = ({options, onChange, name, label, value}) => {
 
   const handleChange = (value) => {
     onChange({
-      name: 'profession',
+      name: name,
       value: {_id: value.value, name: value.label}
     });
   };
@@ -19,7 +19,7 @@ const SelectField = ({options, onChange, name, label, value}) => {
     <div className="mb-4">
       <label className="form-label">{label}</label>
       <Select
-        defaultValue={{label: value.name, value: value._id}}
+        defaultValue={defaultValue ? {label: value.name, value: value._id} : null}
         options={optionsArray}
         className="basic-single"
         classNamePrefix="select"
@@ -35,7 +35,8 @@ SelectField.propTypes = {
   onChange: PropTypes.func,
   name: PropTypes.string,
   label: PropTypes.string,
-  value: PropTypes.object
+  value: PropTypes.object,
+  defaultValue: PropTypes.bool
 };
 
 export default SelectField;

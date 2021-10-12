@@ -64,7 +64,6 @@ const UserEdit = ({user}) => {
     validate();
     const isValid = validate();
     if (!isValid) return;
-    console.log(data);
     api.users.update(data._id, data);
     history.push(`/users/${user._id}`);
   };
@@ -90,6 +89,7 @@ const UserEdit = ({user}) => {
                 error={errors.email}
               />
               <SelectField
+                defaultValue={true}
                 options={professions}
                 onChange={handleChange}
                 name="profession"
