@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
 import api from '../../../api';
 import UserEdit from '../userEdit/';
-import User from './user';
+import UserInfo from './userInfo';
 
 const UserPage = () => {
   const {userId} = useParams();
@@ -15,7 +15,7 @@ const UserPage = () => {
   if (edit) {
     return user ? <UserEdit user={user}/> : <h1>loading...</h1>;
   } else {
-    return user ? <User user={user}/> : <h1>loading...</h1>;
+    return user ? <UserInfo user={user}/> : <h1>loading...</h1>;
   }
 };
 

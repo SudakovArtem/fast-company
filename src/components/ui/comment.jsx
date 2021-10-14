@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import api from '../../api';
+import getCommentTime from '../../utils/getCommentTime';
 
 const Comment = ({comment, removeComment}) => {
   const [user, setUser] = useState();
@@ -20,8 +21,8 @@ const Comment = ({comment, removeComment}) => {
               <div className="mb-4">
                 <div className="d-flex justify-content-between align-items-center">
                   <p className="mb-1">
-                    {user ? user.name : ''}
-                    <span className="small">5 минут назад</span>
+                    {user.name}
+                    <span className="small"> - {getCommentTime(comment.created_at)}</span>
                   </p>
                   <button className="btn btn-sm text-primary d-flex align-items-center" onClick={removeComment.bind(null, comment._id)}>
                     <i className="bi bi-x-lg"/>
@@ -36,7 +37,7 @@ const Comment = ({comment, removeComment}) => {
         </div>
       </div>
     </div>
-  ) : 'loading...';
+  ) : <p>loading...</p>;
 };
 
 Comment.propTypes = {

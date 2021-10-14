@@ -70,6 +70,10 @@ const UserEdit = ({user}) => {
 
   return (
     <div className="container mt-5">
+      <button type="button" className="btn btn-primary btn-lg" onClick={() => history.push(`/users/${user._id}`)}>
+        <i className="bi bi-caret-left pr-2" aria-hidden="true"/>
+        Назад
+      </button>
       <div className="row">
         <div className="col-md-6 offset-md-3 shadow p-4">
           {user ? <>

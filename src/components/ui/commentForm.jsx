@@ -17,9 +17,11 @@ const CommentForm = ({update}) => {
     });
   }, []);
   const [data, setData] = useState({
-    user: {},
+    user: null,
     text: ''
   });
+
+  const submitBtnDisabled = !data.user || !data.text;
 
   const handleChange = (target) => {
     setData((prevState) => ({
@@ -30,6 +32,11 @@ const CommentForm = ({update}) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setData({
+      user: null,
+      text: ''
+    });
+
     api.comments.add({
       pageId: userId,
       userId: data.user._id,
@@ -57,7 +64,7 @@ const CommentForm = ({update}) => {
             onChange={handleChange}
             rows={3}
           />
-          <button type="submit" className="btn btn-primary" onClick={handleSubmit}>Опубликовать</button>
+          <button type="submit" className="btn btn-primary" onClick={handleSubmit} disabled={submitBtnDisabled}>Опубликовать</button>
         </div>
       </div>
     </div>

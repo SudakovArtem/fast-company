@@ -6,7 +6,7 @@ import api from '../../../api';
 import CommentsList from '../../ui/commentsList';
 import CommentForm from '../../ui/commentForm';
 
-const User = ({user}) => {
+const UserInfo = ({user}) => {
   const [comments, setComments] = useState([]);
   const history = useHistory();
 
@@ -71,15 +71,15 @@ const User = ({user}) => {
         <div className="col-md-8">
           <CommentForm update={loadComments}/>
 
-          <CommentsList update={loadComments} comments={comments}/>
+          {!!comments.length && <CommentsList update={loadComments} comments={comments}/>}
         </div>
       </div>
     </div>
   );
 };
 
-User.propTypes = {
+UserInfo.propTypes = {
   user: PropTypes.object
 };
 
-export default User;
+export default UserInfo;
