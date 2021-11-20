@@ -34,10 +34,9 @@ const UserProvider = ({ children }) => {
   }
 
   function errorCather(error) {
-    console.log(error);
-    // const { message } = error.response.data;
-    // setError(message);
-    // setLoading(false);
+    const { message } = error.response.data;
+    setError(message);
+    setLoading(false);
   }
 
   return (
