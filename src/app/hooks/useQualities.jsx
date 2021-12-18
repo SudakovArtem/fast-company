@@ -1,59 +1,62 @@
 import React, { useContext, useEffect, useState } from "react";
-import PropTypes from "prop-types";
-import qualitiesService from "../services/qualities.service";
 import { toast } from "react-toastify";
+import PropTypes from "prop-types";
+import qualityService from "../services/qaulity.service";
 
-const qualitiesContext = React.createContext();
+const QualitiesContex = React.createContext();
 
 export const useQualities = () => {
-  return useContext(qualitiesContext);
+    return useContext(QualitiesContex);
 };
 
 export const QualitiesProvider = ({ children }) => {
-  const [qualities, setQualities] = useState([]);
-  const [isLoading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  useEffect(() => {
-    getQualitiesList();
-  }, []);
-  useEffect(() => {
-    if (error !== null) {
-      toast(error);
-      setError(null);
+    const [qualities, setQualities] = useState([]);
+    const [error, setError] = useState(null);
+    const [isLoading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const getQualities = async () => {
+            try {
+                const { content } = await qualityService.fetchAll();
+                setQualities(content);
+                setLoading(false);
+            } catch (error) {
+                errorCatcher(error);
+            }
+        };
+        getQualities();
+    }, []);
+    const getQuality = (id) => {
+        return qualities.find((q) => q._id === id);
+    };
+
+    function errorCatcher(error) {
+        const { message } = error.response.data;
+        setError(message);
     }
-  }, [error]);
+    useEffect(() => {
+        if (error !== null) {
+            toast(error);
+            setError(null);
+        }
+    }, [error]);
 
-  function errorCather(error) {
-    const { message } = error.response.data;
-    setError(message);
-  }
-
-  function getQualities(id) {
-    return qualities.find((item) => item._id === id);
-  }
-
-  async function getQualitiesList() {
-    try {
-      const data = await qualitiesService.get();
-      console.log(data);
-      setQualities(data.content);
-      setLoading(false);
-    } catch (error) {
-      errorCather(error);
-    }
-  }
-
-  return (
-    <qualitiesContext.Provider value={{
-      isLoading,
-      qualities,
-      getQualities
-    }}>
-      {children}
-    </qualitiesContext.Provider>
-  );
+    return (
+        <QualitiesContex.Provider
+            value={{
+                qualities,
+                getQuality,
+                isLoading
+            }}
+        >
+            {children}
+        </QualitiesContex.Provider>
+    );
 };
 
 QualitiesProvider.propTypes = {
-  children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node])
+    children: PropTypes.oneOfType([
+        PropTypes.arrayOf(PropTypes.node),
+        PropTypes.node
+    ])
 };

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { validator } from "../../utils/ validator";
+import { validator } from "../../utils/validator";
 import TextField from "../common/form/textField";
 import api from "../../api";
 import SelectField from "../common/form/selectField";
@@ -100,8 +100,8 @@ const RegisterForm = () => {
             />
             <SelectField
                 label="Выбери свою профессию"
-                name="profession"
                 defaultOption="Choose..."
+                name="profession"
                 options={professions}
                 onChange={handleChange}
                 value={data.profession}

@@ -25,12 +25,12 @@ const UserTable = ({
         },
         qualities: {
             name: "Качества",
-            component: (user) => <Qualities qualitiesArray={user.qualities} />
+            component: (user) => <Qualities qualities={user.qualities} />
         },
-      professions: {
-        name: "Профессия",
-        component: (user) => <Profession id={user.profession}/>
-      },
+        professions: {
+            name: "Профессия",
+            component: (user) => <Profession id={user.profession} />
+        },
         completedMeetings: {
             path: "completedMeetings",
             name: "Встретился, раз"

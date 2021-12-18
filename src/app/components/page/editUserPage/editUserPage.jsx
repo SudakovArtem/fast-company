@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { validator } from "../../../utils/ validator";
+import { validator } from "../../../utils/validator";
 import api from "../../../api";
 import TextField from "../../common/form/textField";
 import SelectField from "../../common/form/selectField";
@@ -126,8 +126,8 @@ const EditUserPage = () => {
                             />
                             <SelectField
                                 label="Выбери свою профессию"
-                                name="profession"
                                 defaultOption="Choose..."
+                                name="profession"
                                 options={professions}
                                 onChange={handleChange}
                                 value={data.profession}
