@@ -1,29 +1,30 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { useHistory } from "react-router";
+import { useAuth } from "../../hooks/useAuth";
 const UserCard = ({ user }) => {
     const history = useHistory();
+    const { currentUser } = useAuth();
     const handleClick = () => {
         history.push(history.location.pathname + "/edit");
     };
     return (
         <div className="card mb-3">
             <div className="card-body">
+              {currentUser._id === user._id && (
                 <button
-                    className="position-absolute top-0 end-0 btn btn-light btn-sm"
-                    onClick={handleClick}
+                  className="position-absolute top-0 end-0 btn btn-light btn-sm"
+                  onClick={handleClick}
                 >
-                    <i className="bi bi-gear"></i>
+                  <i className="bi bi-gear"/>
                 </button>
+              )}
                 <div className="d-flex flex-column align-items-center text-center position-relative">
                     <img
-                        src={`https://avatars.dicebear.com/api/avataaars/${(
-                            Math.random() + 1
-                        )
-                            .toString(36)
-                            .substring(7)}.svg`}
+                        src={user.image}
                         className="rounded-circle"
                         width="150"
+                        alt="img"
                     />
                     <div className="mt-3">
                         <h4>{user.name}</h4>
@@ -32,13 +33,13 @@ const UserCard = ({ user }) => {
                         </p>
                         <div className="text-muted">
                             <i
-                                className="bi bi-caret-down-fill text-primary"
-                                role="button"
-                            ></i>
+                              className="bi bi-caret-down-fill text-primary"
+                              role="button"
+                            />
                             <i
-                                className="bi bi-caret-up text-secondary"
-                                role="button"
-                            ></i>
+                              className="bi bi-caret-up text-secondary"
+                              role="button"
+                            />
                             <span className="ms-2">{user.rate}</span>
                         </div>
                     </div>

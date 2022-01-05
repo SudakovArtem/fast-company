@@ -17,6 +17,7 @@ const RegisterForm = () => {
     password: "",
     profession: "",
     sex: "male",
+    name: "",
     qualities: [],
     licence: false
   });
@@ -47,6 +48,15 @@ const RegisterForm = () => {
         message: "Email введен некорректно"
       }
     },
+    name: {
+      isRequired: {
+        message: "Имя обязательно для заполнения"
+      },
+      min: {
+        message: "Имя должно состоять минимум из 3 символов",
+        value: 3
+      }
+    },
     password: {
       isRequired: {
         message: "Пароль обязательна для заполнения"
@@ -58,7 +68,7 @@ const RegisterForm = () => {
         message: "Пароль должен содержать хотя бы одно число"
       },
       min: {
-        message: "Пароль должен состаять миниму из 8 символов",
+        message: "Пароль должен состоять минимум из 8 символов",
         value: 8
       }
     },
@@ -70,7 +80,7 @@ const RegisterForm = () => {
     licence: {
       isRequired: {
         message:
-          "Вы не можете использовать наш сервис без подтреврждения лицензионного соглашения"
+          "Вы не можете использовать наш сервис без подтверждения лицензионного соглашения"
       }
     }
   };
@@ -108,6 +118,13 @@ const RegisterForm = () => {
         value={data.email}
         onChange={handleChange}
         error={errors.email}
+      />
+      <TextField
+        label="Имя"
+        name="name"
+        value={data.name}
+        onChange={handleChange}
+        error={errors.name}
       />
       <TextField
         label="Пароль"
