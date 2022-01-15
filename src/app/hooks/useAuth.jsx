@@ -72,6 +72,15 @@ const AuthProvider = ({ children }) => {
     }
   }
 
+  async function updateUser(data) {
+    try {
+      await createUser(data);
+      console.log(data);
+    } catch (error) {
+      errorCatcher(error);
+    }
+  }
+
   async function signIn({ email, password }) {
     const url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.REACT_APP_FIREBASE_KEY}`;
 
@@ -144,7 +153,7 @@ const AuthProvider = ({ children }) => {
       setError(null);
     }
   }, [error]);
-  return <AuthContext.Provider value={{ signUp, signIn, currentUser, logOut }}>
+  return <AuthContext.Provider value={{ signUp, signIn, currentUser, logOut, updateUser }}>
     {!isLoading ? children : "Loading..."}
   </AuthContext.Provider>;
 };

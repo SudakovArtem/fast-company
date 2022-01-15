@@ -42,7 +42,11 @@ const useMockData = () => {
                 incrementCount();
             }
             for (const user of users) {
-                await httpService.put("user/" + user._id, user);
+              const updateUser = {
+                ...user,
+                image: `https://avatars.dicebear.com/api/avataaars/${(Math.random() + 1).toString(36).substring(7)}.svg`
+            };
+                await httpService.put("user/" + updateUser._id, updateUser);
                 incrementCount();
             }
             for (const qual of qualities) {
