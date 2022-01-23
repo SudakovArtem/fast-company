@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { validator } from "../../utils/validator";
+import { validator } from "../../utils/ validator";
 import TextField from "../common/form/textField";
 import CheckBoxField from "../common/form/checkBoxField";
-import { useAuth } from "../../hooks/useAuth";
+import { useDispatch, useSelector } from "react-redux";
+import { getAuthErrors, login } from "../../store/users";
 import { useHistory } from "react-router-dom";
 
 const LoginForm = () => {
@@ -12,9 +13,9 @@ const LoginForm = () => {
         password: "",
         stayOn: false
     });
-  const { signIn } = useAuth();
-
-  const [errors, setErrors] = useState({});
+    const loginError = useSelector(getAuthErrors());
+    const dispatch = useDispatch();
+    const [errors, setErrors] = useState({});
     const handleChange = (target) => {
         setData((prevState) => ({
             ...prevState,
@@ -26,24 +27,11 @@ const LoginForm = () => {
         email: {
             isRequired: {
                 message: "Электронная почта обязательна для заполнения"
-            },
-            isEmail: {
-                message: "Email введен некорректно"
             }
         },
         password: {
             isRequired: {
                 message: "Пароль обязателкн для заполнения"
-            },
-            isCapitalSymbol: {
-                message: "Пароль должен содержать хотя бы одну заглавную букву"
-            },
-            isContainDigit: {
-                message: "Пароль должен содержать хотя бы одно число"
-            },
-            min: {
-                message: "Пароль должен состаять миниму из 8 символов",
-                value: 8
             }
         }
     };
@@ -52,23 +40,20 @@ const LoginForm = () => {
     }, [data]);
     const validate = () => {
         const errors = validator(data, validatorConfig);
-
         setErrors(errors);
         return Object.keys(errors).length === 0;
     };
     const isValid = Object.keys(errors).length === 0;
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
         const isValid = validate();
         if (!isValid) return;
-        console.log(data);
-      try {
-        await signIn(data);
-        history.push(history.location.state ? history.location.state.from.pathname : "/");
-      } catch (error) {
-        setErrors(error);
-      }
+        const redirect = history.location.state ? history.location.state.from.pathname : "/";
+        dispatch(login({
+          payload: data,
+          redirect
+        }));
     };
     return (
         <form onSubmit={handleSubmit}>
@@ -94,6 +79,8 @@ const LoginForm = () => {
             >
                 Оставаться в системе
             </CheckBoxField>
+            {loginError && <p className="text-danger">{loginError}</p>}
+
             <button
                 type="submit"
                 disabled={!isValid}
